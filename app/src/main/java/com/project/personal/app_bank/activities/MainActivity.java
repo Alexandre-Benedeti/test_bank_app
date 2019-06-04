@@ -49,16 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
                 login();
 
-                //AINDA TENHO QUE CRIAR O VALIDADOR DE SENHA
-                intent = new Intent(MainActivity.this, CurrencyActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putString("userName", userName);
-                bundle.putString("userAccount", userAccount);
-                bundle.putString("userBalance", userBalance);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
             }
         });
     }
@@ -79,6 +69,17 @@ public class MainActivity extends AppCompatActivity {
                 userAccount = userResponse.getUserAccount().getBankAccount() +" / "+userResponse.getUserAccount().getAgency();
                 userBalance = String.valueOf(userResponse.getUserAccount().getBalance());
 
+                //iniciar a nova Activity e passar dos dados
+
+                //AINDA TENHO QUE CRIAR O VALIDADOR DE SENHA
+                intent = new Intent(MainActivity.this, CurrencyActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("userName", userName);
+                bundle.putString("userAccount", userAccount);
+                bundle.putString("userBalance", userBalance);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
 
             @Override
