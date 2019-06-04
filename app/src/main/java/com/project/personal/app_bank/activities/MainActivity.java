@@ -15,6 +15,7 @@ import com.project.personal.app_bank.models.LoginRequest;
 import com.project.personal.app_bank.R;
 import com.project.personal.app_bank.models.UserResponse;
 import com.project.personal.app_bank.utils.CheckPassword;
+import com.project.personal.app_bank.utils.CheckUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,11 +50,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //validando a senha
-                if(CheckPassword.validPassword(password.getText().toString()) == true) {
-                    login();
+                if(CheckUser.checkUser(user.getText().toString())==true){
+                    //validando a senha
+                    if(CheckPassword.validPassword(password.getText().toString()) == true) {
+
+                        login();
+
+                    }else{
+                        Toast.makeText(MainActivity.this, "A senha deve possuir pelo menos um caracter Maiúsculo, um especial e um alfanumérico", Toast.LENGTH_LONG).show();
+                    }
                 }else{
-                    Toast.makeText(MainActivity.this, "A senha deve possuir pelo menos um caracter Maiúsculo, um especial e um alfanumérico", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "O usuário pode ser seu e-mail ou CPF", Toast.LENGTH_LONG).show();
                 }
             }
         });

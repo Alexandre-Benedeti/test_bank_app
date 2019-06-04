@@ -56,7 +56,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editPassword"
-        app:layout_constraintVertical_bias="0.83" />
+        app:layout_constraintVertical_bias="0.83"
+        android:foreground="?attr/selectableItemBackground">
+
+    </Button>
+    <!--- android:foreground="?attr/selectableItemBackground"
+    para criar o efeito ripple(ondulação) quando inter for apertado -->/>
 
     <ImageView
         android:id="@+id/imageView"

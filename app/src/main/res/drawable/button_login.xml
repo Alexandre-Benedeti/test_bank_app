@@ -5,7 +5,6 @@
             <corners android:radius="4dp"/> <!-- valor do arredondamento das bordas -->
             <padding android:bottom="15dp" android:left="13dp" android:right="8dp" android:top="17dp"/>
             <size android:height="62dp" android:width="202dp"></size>
-
         </shape>
     </item>
 </selector>
