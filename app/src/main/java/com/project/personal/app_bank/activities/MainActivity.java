@@ -1,6 +1,8 @@
 package com.project.personal.app_bank.activities;
 
+
 import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +13,8 @@ import android.widget.Toast;
 
 import com.project.personal.app_bank.API.APIInterface;
 import com.project.personal.app_bank.API.RetrofitClient;
-import com.project.personal.app_bank.models.LoginRequest;
 import com.project.personal.app_bank.R;
+import com.project.personal.app_bank.models.LoginRequest;
 import com.project.personal.app_bank.models.UserResponse;
 import com.project.personal.app_bank.utils.CheckPassword;
 import com.project.personal.app_bank.utils.CheckUser;
@@ -29,21 +31,23 @@ public class MainActivity extends AppCompatActivity {
     private Intent intent;
     private String userName, userAccount, userBalance;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userName = null; //se não iniciar com null acontece erro na passagem dos valores para outra activity;
+        //para requisições get e post
+        apiInterface = RetrofitClient.getInstance().create(APIInterface.class);
+
+        userName = null;
         userAccount = null;
         userBalance = null;
-
-        apiInterface = RetrofitClient.getInstance().create(APIInterface.class);
 
         user = findViewById(R.id.editUser);
         password = findViewById(R.id.editPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
+
+
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
 
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(CheckUser.checkUser(user.getText().toString())==true){
+
                     //validando a senha
                     if(CheckPassword.validPassword(password.getText().toString()) == true) {
 
@@ -66,40 +71,43 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void login(){
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUser(user.toString());
-        loginRequest.setPassword(password.toString());
-        Call<UserResponse> userResponse = apiInterface.createPost(loginRequest);
+            //logar usuário
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUser(user.toString());
+            loginRequest.setPassword(password.toString());
+            Call<UserResponse> userResponse = apiInterface.createPost(loginRequest);
 
-        userResponse.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
-                UserResponse userResponse = response.body();
+            userResponse.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
 
-                userName = userResponse.getUserAccount().getName();
-                userAccount = userResponse.getUserAccount().getBankAccount() +" / "+userResponse.getUserAccount().getAgency();
-                userBalance = String.valueOf(userResponse.getUserAccount().getBalance());
+                    UserResponse userResponse = response.body();
 
-                //iniciar a nova Activity e passar dos dados
+                    userName = userResponse.getUserAccount().getName();
+                    userAccount = userResponse.getUserAccount().getBankAccount() + " / " + userResponse.getUserAccount().getAgency();
+                    userBalance = String.valueOf(userResponse.getUserAccount().getBalance());
 
-                intent = new Intent(MainActivity.this, CurrencyActivity.class);
+                    //iniciar a nova Activity e passar dos dados
+                    intent = new Intent(MainActivity.this, CurrencyActivity.class);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("userName", userName);
-                bundle.putString("userAccount", userAccount);
-                bundle.putString("userBalance", userBalance);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userName", userName);
+                    bundle.putString("userAccount", userAccount);
+                    bundle.putString("userBalance", userBalance);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
 
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                Log.d("test_post", t.getMessage());
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    Log.d("test_post", t.getMessage());
 
-            }
-        });
+                }
+            });
 
+        }
     }
-}
+

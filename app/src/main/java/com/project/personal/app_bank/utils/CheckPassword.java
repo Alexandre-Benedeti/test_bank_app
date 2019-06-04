@@ -28,7 +28,7 @@ public class CheckPassword {
             }
         }
 
-        if(checkAlpha && checkEspecial && checkUpper == true){
+        if(checkAlpha ==true && checkEspecial==true && checkUpper == true){
             return true;
         }else{
             return false;
