@@ -36,13 +36,14 @@ public class MainActivity extends AppCompatActivity {
         userAccount = null;
         userBalance = null;
 
-        apiInterface = RetrofitClient.getInstance("https://bank-app-test.herokuapp.com/api/").create(APIInterface.class);
+        apiInterface = RetrofitClient.getInstance().create(APIInterface.class);
 
         user = findViewById(R.id.editUser);
         password = findViewById(R.id.editPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
