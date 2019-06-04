@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.project.personal.app_bank.API.APIInterface;
 import com.project.personal.app_bank.API.RetrofitClient;
 import com.project.personal.app_bank.models.LoginRequest;
 import com.project.personal.app_bank.R;
 import com.project.personal.app_bank.models.UserResponse;
+import com.project.personal.app_bank.utils.CheckPassword;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,8 +49,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                login();
-
+                //validando a senha
+                if(CheckPassword.validPassword(password.getText().toString()) == true) {
+                    login();
+                }else{
+                    Toast.makeText(MainActivity.this, "A senha deve possuir pelo menos um caracter Maiúsculo, um especial e um alfanumérico", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -71,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //iniciar a nova Activity e passar dos dados
 
-                //AINDA TENHO QUE CRIAR O VALIDADOR DE SENHA
                 intent = new Intent(MainActivity.this, CurrencyActivity.class);
 
                 Bundle bundle = new Bundle();
