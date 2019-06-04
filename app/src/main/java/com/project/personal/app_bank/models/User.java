@@ -9,9 +9,13 @@ public class User {
     @Expose
     private String name;
 
-    @SerializedName("bankAccont")
+    @SerializedName("bankAccount")
     @Expose
     private String bankAccount;
+
+    @SerializedName("agency")
+    @Expose
+    private String agency;
 
     @SerializedName("userId")
     @Expose
@@ -21,13 +25,6 @@ public class User {
     @Expose
     private float balance;
 
-//
-//    public User(String name, String bankAccount, int userId, float balance, String text) {
-//        this.name = name;
-//        this.bankAccount = bankAccount;
-//        this.userId = userId;
-//        this.balance = balance;
-//    }
 
     public String getName() {
         return name;
@@ -43,5 +40,13 @@ public class User {
 
     public float getBalance() {
         return balance;
+    }
+
+    public String getAgency() {
+        return agency;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

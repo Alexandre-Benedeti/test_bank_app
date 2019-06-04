@@ -1,5 +1,6 @@
 package com.project.personal.app_bank.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,6 @@ import android.widget.EditText;
 import com.project.personal.app_bank.API.APIInterface;
 import com.project.personal.app_bank.API.RetrofitClient;
 import com.project.personal.app_bank.models.LoginRequest;
-import com.project.personal.app_bank.models.User;
 import com.project.personal.app_bank.R;
 import com.project.personal.app_bank.models.UserResponse;
 
@@ -19,16 +19,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    EditText user;
-    EditText password;
-    Button buttonLogin;
-    APIInterface apiInterface;
+
+    private EditText user, password;
+    private Button buttonLogin;
+    private APIInterface apiInterface;
+    private Intent intent;
+    private String userName, userAccount, userBalance;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userName = null; //se não iniciar com null acontece erro na passagem dos valores para outra activity;
+        userAccount = null;
+        userBalance = null;
 
         apiInterface = RetrofitClient.getInstance("https://bank-app-test.herokuapp.com/api/").create(APIInterface.class);
 
@@ -41,6 +47,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 login();
+
+                //AINDA TENHO QUE CRIAR O VALIDADOR DE SENHA
+                intent = new Intent(MainActivity.this, CurrencyActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("userName", userName);
+                bundle.putString("userAccount", userAccount);
+                bundle.putString("userBalance", userBalance);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
             }
         });
     }
@@ -57,13 +74,16 @@ public class MainActivity extends AppCompatActivity {
 
                 UserResponse userResponse = response.body();
 
-                Log.d("test_post", String.valueOf(response.code()));
-                Log.d("test_post", userResponse.getUserAccount().getName());
+                userName = userResponse.getUserAccount().getName();
+                userAccount = userResponse.getUserAccount().getBankAccount() +" / "+userResponse.getUserAccount().getAgency();
+                userBalance = String.valueOf(userResponse.getUserAccount().getBalance());
+
             }
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 Log.d("test_post", t.getMessage());
+
             }
         });
 
